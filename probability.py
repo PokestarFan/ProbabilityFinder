@@ -89,5 +89,4 @@ if __name__ == '__main__':
     times = args.times
     if type(times) == list:
         times = times[0]
-    print(odds, times)
     run_tests(times, odds)
