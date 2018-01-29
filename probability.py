@@ -81,3 +81,6 @@ def get_input(times = True, odds = True):
     if odds:
         odds = input('The odds?')
     run_tests(times, odds)
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Run big batch tests to really find out probability.')
