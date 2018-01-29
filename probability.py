@@ -1,6 +1,6 @@
 from random import randrange
 import os
-
+from tqdm import tqdm
 
 def write_to_csv(filename, *args, newline = True):
     write_string = ''
@@ -36,7 +36,7 @@ def calculate_probability(odds):
     d = {}
     writelist = []
     percentlist = []
-    for i in range(odds):
+    for i in tqdm(range(odds)):
         d[str(i)] = 0
         writelist.append(f'Times {i}')
         percentlist.append(f'Percent {i}')
@@ -47,7 +47,7 @@ def calculate_probability(odds):
             break
     filename = str(file_count)
     write_to_csv(filename, 'Number', 'Value')
-    for i in range(1000):
+    for i in tqdm(range(500 * odds)):
         ran = randrange(odds)
         ran = int(ran)
         d[str(ran)] += 1
@@ -66,3 +66,15 @@ def calculate_probability(odds):
     else:
         write_to_csv('runs', 'Run #', writelist, percentlist)
         write_to_csv('runs', file_count, writelist2, percentlist2)
+
+def run_tests(times, odds):
+    for i in tqdm(range(times)):
+        calculate_probability(odds)
+        os.chdir("..")
+        os.chdir("..")
+
+
+def get_input():
+    times = input('How many times?')
+    odds = input('The odds?')
+    run_tests(times, odds)
