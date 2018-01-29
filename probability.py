@@ -78,5 +78,5 @@ def run_tests(times, odds):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run big batch tests to really find out probability.')
     parser.add_argument('--version', action = 'version', version = '1.0')
-    parser.add_argument('odds', nargs = 1, type = int, metavar = 'Odds for probability')
-    parser.add_argument('-t', '--times', nargs = 1, type = int, metavar = 'Times Repeated')
+    parser.add_argument('odds', nargs = 1, type = int, metavar = 'Odds for probability', help = 'Select the odds for probability, for example 2 to choose from 1 and 2')
+    parser.add_argument('-t', '--times', nargs = 1, type = int, metavar = 'Times Repeated', help = 'The number of times to be repeated, default 10.', default = 10)
