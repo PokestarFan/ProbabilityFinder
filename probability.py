@@ -65,7 +65,7 @@ def calculate_probability(odds):
             writelist2.append(d[i])
         percentlist2 = []
         for i in writelist2:
-            percentlist2.append(round(((i/1000)*100), 2))
+            percentlist2.append(round(((i/rep)*100), 2))
         if os.path.isfile('runs.csv'):
             write_to_csv('runs', file_count, writelist2, percentlist2)
         else:
