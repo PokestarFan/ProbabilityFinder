@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function
 from random import randrange
-import os
+import os, argparse
 from tqdm import tqdm
 
 def write_to_csv(filename, *args, newline = True):
@@ -48,7 +48,10 @@ def calculate_probability(odds):
             break
     filename = str(file_count)
     write_to_csv(filename, 'Number', 'Value')
-    for i in tqdm(range(500 * odds)):
+    rep = 500 * odds
+    if rep > 10000:
+        rep = 10000
+    for i in tqdm(range()):
         ran = randrange(odds)
         ran = int(ran)
         d[str(ran)] += 1
@@ -80,3 +83,10 @@ if __name__ == '__main__':
     parser.add_argument('--version', action = 'version', version = '1.0')
     parser.add_argument('odds', nargs = 1, type = int, metavar = 'Odds for probability', help = 'Select the odds for probability, for example 2 to choose from 1 and 2')
     parser.add_argument('-t', '--times', nargs = 1, type = int, metavar = 'Times Repeated', help = 'The number of times to be repeated, default 10.', default = 10)
+    args = parser.parse_args()
+    odds = (args.odds)[0]
+    times = args.times
+    if type(times) == list:
+        times = times[0]
+    print(odds, times)
+    run_tests(times, odds)
