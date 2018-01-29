@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function
 from random import randrange
 import os
 from tqdm import tqdm
@@ -74,7 +75,9 @@ def run_tests(times, odds):
         os.chdir("..")
 
 
-def get_input():
-    times = input('How many times?')
-    odds = input('The odds?')
+def get_input(times = True, odds = True):
+    if times:
+        times = input('How many times?')
+    if odds:
+        odds = input('The odds?')
     run_tests(times, odds)
