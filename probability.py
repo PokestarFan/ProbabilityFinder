@@ -37,7 +37,6 @@ def calculate_probability(odds):
     d = {}
     writelist = []
     percentlist = []
-    print('Creating lists...')
     for i in tqdm(range(odds)):
         d[str(i)] = 0
         writelist.append(f'Times {i}')
@@ -52,7 +51,6 @@ def calculate_probability(odds):
     rep = 500 * odds
     if rep > 10000:
         rep = 10000
-    print('Running calculator')
     for i in tqdm(range(rep)):
         ran = randrange(odds)
         ran = int(ran)
