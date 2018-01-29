@@ -62,16 +62,17 @@ def calculate_probability(odds):
         else:
             write_to_csv(filename, i, ran+1)
     writelist2 = []
-    for i in d:
-        writelist2.append(d[i])
-    percentlist2 = []
-    for i in writelist2:
-        percentlist2.append(round(((i/1000)*100), 2))
-    if os.path.isfile('runs.csv'):
-        write_to_csv('runs', file_count, writelist2, percentlist2)
-    else:
-        write_to_csv('runs', 'Run #', writelist, percentlist)
-        write_to_csv('runs', file_count, writelist2, percentlist2)
+    for i in tqdm(range(1)):
+        for i in d:
+            writelist2.append(d[i])
+        percentlist2 = []
+        for i in writelist2:
+            percentlist2.append(round(((i/1000)*100), 2))
+        if os.path.isfile('runs.csv'):
+            write_to_csv('runs', file_count, writelist2, percentlist2)
+        else:
+            write_to_csv('runs', 'Run #', writelist, percentlist)
+            write_to_csv('runs', file_count, writelist2, percentlist2)
 
 def run_tests(times, odds):
     for i in tqdm(range(times)):
