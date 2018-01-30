@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function
 from random import randrange
-import os, argparse
+import os, argparse, time
 from tqdm import tqdm
 
 def write_to_csv(filename, *args, newline = True):
@@ -30,7 +30,7 @@ def move_dir(dirname, parent = False):
     else:
         os.chdir("..")
 
-def calculate_probability(odds, exitmode = False):
+def calculate_probability(odds, exitmode = False, low_cpu = False):
     try:
         file_count = 0
         move_dir('Probability')
@@ -60,6 +60,8 @@ def calculate_probability(odds, exitmode = False):
                 write_to_csv(filename, i, ran+1, newline = False)
             else:
                 write_to_csv(filename, i, ran+1)
+            if low_cpu:
+                time.sleep(0.01)
         writelist2 = []
         percentlist2 = []
         for i in tqdm(range(odds)):
@@ -89,9 +91,9 @@ def calculate_probability(odds, exitmode = False):
                 exit()
             calculate_probability(odds, exitmode = True)
 
-def run_tests(times, odds):
+def run_tests(times, odds, low_cpu = False):
     for i in tqdm(range(times)):
-        calculate_probability(odds)
+        calculate_probability(odds, low_cpu = low_cpu)
         os.chdir("..")
         os.chdir("..")
 
@@ -101,9 +103,11 @@ if __name__ == '__main__':
     parser.add_argument('--version', action = 'version', version = '1.0')
     parser.add_argument('odds', nargs = 1, type = int, metavar = 'Odds for probability', help = 'Select the odds for probability, for example 2 to choose from 1 and 2')
     parser.add_argument('-t', '--times', nargs = 1, type = int, metavar = 'Times Repeated', help = 'The number of times to be repeated, default 10.', default = 10)
+    parser.add_argument('-l', '-cpu', '-lcpu', '-low' ,'--low_cpu', help = 'Use low cpu?', action = 'store_true')
     args = parser.parse_args()
     odds = (args.odds)[0]
     times = args.times
+    cpu = args.low_cpu
     if type(times) == list:
         times = times[0]
     run_tests(times, odds)
