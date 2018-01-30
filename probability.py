@@ -60,7 +60,7 @@ def calculate_probability(odds):
         else:
             write_to_csv(filename, i, ran+1)
     writelist2 = []
-    percentlist2.append()
+    percentlist2 = []
     for i in tqdm(range(odds)):
         val = d[str(i)]
         writelist2.append(val)
