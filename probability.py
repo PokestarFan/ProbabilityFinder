@@ -110,4 +110,4 @@ if __name__ == '__main__':
     cpu = args.low_cpu
     if type(times) == list:
         times = times[0]
-    run_tests(times, odds, low_cpu = low_cpu)
+    run_tests(times, odds, low_cpu = cpu)
