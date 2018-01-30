@@ -99,6 +99,7 @@ def run_tests(times, odds, low_cpu = False):
 
 
 if __name__ == '__main__':
+    os.system('cls')
     parser = argparse.ArgumentParser(description='Run big batch tests to really find out probability.')
     parser.add_argument('--version', action = 'version', version = '1.0')
     parser.add_argument('odds', nargs = 1, type = int, metavar = 'Odds for probability', help = 'Select the odds for probability, for example 2 to choose from 1 and 2')
