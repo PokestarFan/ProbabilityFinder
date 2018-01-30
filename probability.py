@@ -89,7 +89,7 @@ def calculate_probability(odds, exitmode = False, low_cpu = False):
                 os.chdir("..")
             except FileNotFoundError:
                 exit()
-            calculate_probability(odds, exitmode = True, low_cpu = low_cpu)
+            calculate_probability(odds, exitmode = True)
 
 def run_tests(times, odds, low_cpu = False):
     for i in tqdm(range(times)):
