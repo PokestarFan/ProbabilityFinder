@@ -30,46 +30,64 @@ def move_dir(dirname, parent = False):
     else:
         os.chdir("..")
 
-def calculate_probability(odds):
-    file_count = 0
-    move_dir('Probability')
-    move_dir(str(odds))
-    d = {}
-    writelist = []
-    percentlist = []
-    for i in tqdm(range(odds)):
-        d[str(i)] = 0
-        writelist.append(f'Times {i}')
-        percentlist.append(f'Percent {i}')
-    while True:
-        if os.path.isfile(str(file_count)+'.csv'):
-            file_count += 1
+def calculate_probability(odds, exitmode = False):
+    try:
+        file_count = 0
+        move_dir('Probability')
+        move_dir(str(odds))
+        d = {}
+        writelist = []
+        percentlist = []
+        for i in tqdm(range(odds)):
+            d[str(i)] = 0
+            writelist.append(f'Times {i}')
+            percentlist.append(f'Percent {i}')
+        while True:
+            if os.path.isfile(str(file_count)+'.csv'):
+                file_count += 1
+            else:
+                break
+        filename = str(file_count)
+        write_to_csv(filename, 'Number', 'Value')
+        rep = 500 * odds
+        if rep > 10000:
+            rep = 10000
+        for i in tqdm(range(rep)):
+            ran = randrange(odds)
+            ran = int(ran)
+            d[str(ran)] += 1
+            if i == 999:
+                write_to_csv(filename, i, ran+1, newline = False)
+            else:
+                write_to_csv(filename, i, ran+1)
+        writelist2 = []
+        percentlist2 = []
+        for i in tqdm(range(odds)):
+            val = d[str(i)]
+            writelist2.append(val)
+            percentlist2.append(round(((val/rep)*100), 2))
+        if os.path.isfile('runs.csv'):
+            write_to_csv('runs', file_count, writelist2, percentlist2)
         else:
-            break
-    filename = str(file_count)
-    write_to_csv(filename, 'Number', 'Value')
-    rep = 500 * odds
-    if rep > 10000:
-        rep = 10000
-    for i in tqdm(range(rep)):
-        ran = randrange(odds)
-        ran = int(ran)
-        d[str(ran)] += 1
-        if i == 999:
-            write_to_csv(filename, i, ran+1, newline = False)
+            write_to_csv('runs', 'Run #', writelist, percentlist)
+            write_to_csv('runs', file_count, writelist2, percentlist2)
+        if exitmode:
+            exit()
+    except(KeyboardInterrupt, SystemExit):
+        if exitmode:
+            os.remove(str(file_count)+'.csv')
+            exit()
         else:
-            write_to_csv(filename, i, ran+1)
-    writelist2 = []
-    percentlist2 = []
-    for i in tqdm(range(odds)):
-        val = d[str(i)]
-        writelist2.append(val)
-        percentlist2.append(round(((val/rep)*100), 2))
-    if os.path.isfile('runs.csv'):
-        write_to_csv('runs', file_count, writelist2, percentlist2)
-    else:
-        write_to_csv('runs', 'Run #', writelist, percentlist)
-        write_to_csv('runs', file_count, writelist2, percentlist2)
+            try:
+                os.system('cls')
+                print('User/program interrupted, lauching shutdown mode...')
+                os.remove(str(file_count)+'.csv')
+                print('Finilizaing current trial...')
+                os.chdir("..")
+                os.chdir("..")
+            except FileNotFoundError:
+                exit()
+            calculate_probability(odds, exitmode = True)
 
 def run_tests(times, odds):
     for i in tqdm(range(times)):
