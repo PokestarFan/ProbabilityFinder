@@ -61,7 +61,7 @@ def calculate_probability(odds, exitmode = False, low_cpu = False):
             else:
                 write_to_csv(filename, i, ran+1)
             if low_cpu:
-                time.sleep(0.01)
+                time.sleep(0.1)
         writelist2 = []
         percentlist2 = []
         for i in tqdm(range(odds)):
@@ -110,4 +110,4 @@ if __name__ == '__main__':
     cpu = args.low_cpu
     if type(times) == list:
         times = times[0]
-    run_tests(times, odds)
+    run_tests(times, odds, low_cpu = low_cpu)
