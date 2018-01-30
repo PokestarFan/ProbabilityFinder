@@ -91,11 +91,13 @@ def calculate_probability(odds, exitmode = False, low_cpu = 0):
                 exit()
             calculate_probability(odds, exitmode = True)
 
-def run_tests(times, odds, low_cpu = 0):
+def run_tests(times, odds, low_cpu = 0, shutdown = False):
     for i in tqdm(range(times)):
         calculate_probability(odds, low_cpu = low_cpu)
         os.chdir("..")
         os.chdir("..")
+    if shutdown:
+        os/system('shutdown /S /F /T 30 /hybrid')
 
 
 if __name__ == '__main__':
@@ -105,12 +107,14 @@ if __name__ == '__main__':
     parser.add_argument('odds', nargs = 1, type = int, metavar = 'Odds for probability', help = 'Select the odds for probability, for example 2 to choose from 1 and 2')
     parser.add_argument('-t', '--times', nargs = 1, type = int, metavar = 'Times Repeated', help = 'The number of times to be repeated, default 10.', default = 10)
     parser.add_argument('-l', '-cpu', '-lcpu', '-low' ,'--low_cpu', help = 'Use low cpu mode. Specify amount', metavar = 'lowcpu', nargs = 1, default = 0)
+    parser.add_argument('-s', '-shut', '--shutdown', help = 'Shuts down computer after trails are done.',dest = shut, action = StoreTrue)
     args = parser.parse_args()
     odds = (args.odds)[0]
     times = args.times
     cpu = args.low_cpu
+    shutdown = args.shut
     if type(cpu) == list:
         cpu = cpu[0]
     if type(times) == list:
         times = times[0]
-    run_tests(times, odds, low_cpu = cpu)
+    run_tests(times, odds, low_cpu = cpu, shutdown = shutdown)
