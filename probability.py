@@ -61,7 +61,7 @@ def calculate_probability(odds, exitmode = False, low_cpu = False):
             else:
                 write_to_csv(filename, i, ran+1)
             if low_cpu:
-                time.sleep(0.1)
+                time.sleep(0.01)
         writelist2 = []
         percentlist2 = []
         for i in tqdm(range(odds)):
@@ -89,7 +89,7 @@ def calculate_probability(odds, exitmode = False, low_cpu = False):
                 os.chdir("..")
             except FileNotFoundError:
                 exit()
-            calculate_probability(odds, exitmode = True)
+            calculate_probability(odds, exitmode = True, low_cpu = low_cpu)
 
 def run_tests(times, odds, low_cpu = False):
     for i in tqdm(range(times)):
