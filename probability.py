@@ -107,7 +107,7 @@ if __name__ == '__main__':
     parser.add_argument('odds', nargs = 1, type = int, metavar = 'Odds for probability', help = 'Select the odds for probability, for example 2 to choose from 1 and 2')
     parser.add_argument('-t', '--times', nargs = 1, type = int, metavar = 'Times Repeated', help = 'The number of times to be repeated, default 10.', default = 10)
     parser.add_argument('-l', '-cpu', '-lcpu', '-low' ,'--low_cpu', help = 'Use low cpu mode. Specify amount', metavar = 'lowcpu', nargs = 1, default = 0)
-    parser.add_argument('-s', '-shut', '--shutdown', help = 'Shuts down computer after trails are done.',dest = shut, action = StoreTrue)
+    parser.add_argument('-s', '-shut', '--shutdown', help = 'Shuts down computer after trails are done.',dest = 'shut', action = StoreTrue)
     args = parser.parse_args()
     odds = (args.odds)[0]
     times = args.times
