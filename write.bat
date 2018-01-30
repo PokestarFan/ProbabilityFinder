@@ -1,0 +1,19 @@
+start cmd.exe /C probability.py 2start cmd.exe /C probability.py 3start cmd.exe /C probability.py 4start cmd.exe /C probability.py 5start cmd.exe /C probability.py 6start cmd.exe /C probability.py 7start cmd.exe /C probability.py 8start cmd.exe /C probability.py 9start cmd.exe /C probability.py 10start cmd.exe /C probability.py 11start cmd.exe /C probability.py 12start cmd.exe /C probability.py 13start cmd.exe /C probability.py 14start cmd.exe /C probability.py 15start cmd.exe /C probability.py 16start cmd.exe /C probability.py 17start cmd.exe /C probability.py 18start cmd.exe /C probability.py 19start cmd.exe /C probability.py 20start cmd.exe /C probability.py 2
+start cmd.exe /C probability.py 3
+start cmd.exe /C probability.py 4
+start cmd.exe /C probability.py 5
+start cmd.exe /C probability.py 6
+start cmd.exe /C probability.py 7
+start cmd.exe /C probability.py 8
+start cmd.exe /C probability.py 9
+start cmd.exe /C probability.py 10
+start cmd.exe /C probability.py 11
+start cmd.exe /C probability.py 12
+start cmd.exe /C probability.py 13
+start cmd.exe /C probability.py 14
+start cmd.exe /C probability.py 15
+start cmd.exe /C probability.py 16
+start cmd.exe /C probability.py 17
+start cmd.exe /C probability.py 18
+start cmd.exe /C probability.py 19
+start cmd.exe /C probability.py 20
