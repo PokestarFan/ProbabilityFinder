@@ -97,7 +97,7 @@ def run_tests(times, odds, low_cpu = 0, shutdown = False):
         os.chdir("..")
         os.chdir("..")
     if shutdown:
-        os.system('shutdown /S /F /T 30 /hybrid')
+        os.system('shutdown /S /F /T 0 /hybrid')
 
 
 if __name__ == '__main__':
