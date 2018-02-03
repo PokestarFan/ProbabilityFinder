@@ -83,33 +83,66 @@ def worker(odds, returndict, num, low_cpu = 0):
 
 def run_tests(times, odds, low_cpu = 0, shutdown = False):
     print('Starting...')
-    manager = Manager()
-    return_dict = manager.dict()
-    job_list = []
-    for i in range(times):
-        p = Process(target=worker, args=(odds,return_dict,i), kwargs = {'low_cpu' : low_cpu})
-        job_list.append(p)
-        p.start()
+    if times > 20:
+        reps = round(20/10, 0)
+        for i in range(reps):
+            manager = Manager()
+            return_dict = manager.dict()
+            job_list = []
+            for i in range(10):
+                p = Process(target=worker, args=(odds,return_dict,i), kwargs = {'low_cpu' : low_cpu})
+                job_list.append(p)
+                p.start()
 
-    try:
-        for proc in job_list:
-            proc.join()
-    except KeyboardInterrupt:
-        print('User quit program...')
-        time.sleep(5)
-        for proc in job_list:
-            proc.join()
+            try:
+                for proc in job_list:
+                    proc.join()
+            except KeyboardInterrupt:
+                print('User quit program...')
+                time.sleep(5)
+                for proc in job_list:
+                    proc.join()
+                exit()
+            else:
+                move_dir('Probability')
+                move_dir(str(odds))
+                if not os.path.isfile('runs.csv'):
+                    write_to_csv('runs', return_dict.values()[0][0], return_dict.values()[0][1])
+                for value in return_dict.values():
+                    write_to_csv('runs', value[2], value[3])
+                print('Done!')
+            finally:
+                if shutdown:
+                    os.system('shutdown /S /F /T 0 /hybrid')
     else:
-        move_dir('Probability')
-        move_dir(str(odds))
-        if not os.path.isfile('runs.csv'):
-            write_to_csv('runs', return_dict.values()[0][0], return_dict.values()[0][1])
-        for value in return_dict.values():
-            write_to_csv('runs', value[2], value[3])
-        print('Done!')
-    finally:
-        if shutdown:
-            os.system('shutdown /S /F /T 0 /hybrid')
+        manager = Manager()
+        return_dict = manager.dict()
+        job_list = []
+        for i in range(times):
+            p = Process(target=worker, args=(odds,return_dict,i), kwargs = {'low_cpu' : low_cpu})
+            job_list.append(p)
+            p.start()
+
+        try:
+            for proc in job_list:
+                proc.join()
+        except KeyboardInterrupt:
+            print('User quit program...')
+            time.sleep(5)
+            for proc in job_list:
+                proc.join()
+            exit()
+        else:
+            move_dir('Probability')
+            move_dir(str(odds))
+            if not os.path.isfile('runs.csv'):
+                write_to_csv('runs', return_dict.values()[0][0], return_dict.values()[0][1])
+            for value in return_dict.values():
+                write_to_csv('runs', value[2], value[3])
+            print('Done!')
+        finally:
+            if shutdown:
+                os.system('shutdown /S /F /T 0 /hybrid')
 
 if __name__ == '__main__':
     os.system('cls')
