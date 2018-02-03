@@ -132,5 +132,5 @@ if __name__ == '__main__':
 
     if times > 20:
         reps = round(times/10)
-        for i in reps:
+        for i in range(reps):
             run_tests(10, odds, low_cpu = cpu, shutdown = shutdown)
