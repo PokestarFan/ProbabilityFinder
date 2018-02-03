@@ -84,7 +84,7 @@ def worker(odds, returndict, num, low_cpu = 0):
 def run_tests(times, odds, low_cpu = 0, shutdown = False):
     print('Starting...')
     if times > 20:
-        reps = round(20/10, 0)
+        reps = round(20/10)
         for i in range(reps):
             manager = Manager()
             return_dict = manager.dict()
