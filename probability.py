@@ -82,6 +82,7 @@ def worker(odds, returndict, num, low_cpu = 0):
     os.system('cls')
 
 def run_tests(times, odds, low_cpu = 0, shutdown = False):
+    print('Starting...')
     manager = Manager()
     return_dict = manager.dict()
     job_list = []
@@ -90,18 +91,25 @@ def run_tests(times, odds, low_cpu = 0, shutdown = False):
         job_list.append(p)
         p.start()
 
-    for proc in job_list:
-        proc.join()
-
-    move_dir('Probability')
-    move_dir(str(odds))
-    if not os.path.isfile('runs.csv'):
-        write_to_csv('runs', return_dict.values()[0][0], return_dict.values()[0][1])
-    for value in return_dict.values():
-        write_to_csv('runs', value[2], value[3])
-    if shutdown:
-        os.system('shutdown /S /F /T 0 /hybrid')
-
+    try:
+        for proc in job_list:
+            proc.join()
+    except KeyboardInterrupt:
+        print('User quit program...')
+        time.sleep(5)
+        for proc in job_list:
+            proc.join()
+    else:
+        move_dir('Probability')
+        move_dir(str(odds))
+        if not os.path.isfile('runs.csv'):
+            write_to_csv('runs', return_dict.values()[0][0], return_dict.values()[0][1])
+        for value in return_dict.values():
+            write_to_csv('runs', value[2], value[3])
+        print('Done!')
+    finally:
+        if shutdown:
+            os.system('shutdown /S /F /T 0 /hybrid')
 
 if __name__ == '__main__':
     os.system('cls')
