@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function
 from numpy.random import randint as randrange
 import os, argparse, time
-from tqdm import tqdm
+from multiprocessing import Process, Manager
 
 def write_to_csv(filename, *args, newline = True):
     write_string = ''
@@ -30,7 +30,7 @@ def move_dir(dirname, parent = False):
     else:
         os.chdir("..")
 
-def calculate_probability(odds, exitmode = False, low_cpu = 0):
+def calculate_probability(odds, low_cpu = 0):
     try:
         file_count = 0
         move_dir('Probability')
@@ -38,7 +38,7 @@ def calculate_probability(odds, exitmode = False, low_cpu = 0):
         d = {}
         writelist = []
         percentlist = []
-        for i in tqdm(range(odds)):
+        for i in range(odds):
             d[str(i)] = 0
             writelist.append(f'Times {i}')
             percentlist.append(f'Percent {i}')
@@ -52,7 +52,7 @@ def calculate_probability(odds, exitmode = False, low_cpu = 0):
         rep = 500 * odds
         if rep > 10000:
             rep = 10000
-        for i in tqdm(range(rep)):
+        for i in range(rep):
             ran = randrange(odds)
             ran = int(ran)
             d[str(ran)] += 1
@@ -64,38 +64,41 @@ def calculate_probability(odds, exitmode = False, low_cpu = 0):
                 time.sleep(0.01*float(low_cpu))
         writelist2 = []
         percentlist2 = []
-        for i in tqdm(range(odds)):
+        for i in range(odds):
             val = d[str(i)]
             writelist2.append(val)
             percentlist2.append(round(((val/rep)*100), 2))
-        if os.path.isfile('runs.csv'):
-            write_to_csv('runs', file_count, writelist2, percentlist2)
-        else:
-            write_to_csv('runs', 'Run #', writelist, percentlist)
-            write_to_csv('runs', file_count, writelist2, percentlist2)
-        if exitmode:
-            exit()
+        return (writelist, percentlist, writelist2, percentlist2)
     except(KeyboardInterrupt, SystemExit):
-        if exitmode:
+        try:
             os.remove(str(file_count)+'.csv')
+        finally:
             exit()
-        else:
-            try:
-                os.system('cls')
-                print('User/program interrupted, lauching shutdown mode...')
-                os.remove(str(file_count)+'.csv')
-                print('Finilizaing current trial...')
-                os.chdir("..")
-                os.chdir("..")
-            except FileNotFoundError:
-                exit()
-            calculate_probability(odds, exitmode = True)
+
+def worker(odds, returndict, num, low_cpu = 0):
+    returndict[f'write{num}'] = calculate_probability(odds, low_cpu = low_cpu)
+    os.chdir("..")
+    os.chdir("..")
+    os.system('cls')
 
 def run_tests(times, odds, low_cpu = 0, shutdown = False):
-    for i in tqdm(range(times)):
-        calculate_probability(odds, low_cpu = low_cpu)
-        os.chdir("..")
-        os.chdir("..")
+    manager = Manager()
+    return_dict = manager.dict()
+    job_list = []
+    for i in range(times):
+        p = Process(target=worker, args=(odds,return_dict,i), kwargs = {'low_cpu' : low_cpu})
+        job_list.append(p)
+        p.start()
+
+    for proc in job_list:
+        proc.join()
+
+    move_dir('Probability')
+    move_dir(str(odds))
+    if not os.path.isfile('runs.csv'):
+        write_to_csv('runs', return_dict.values()[0][0], return_dict.values()[0][1])
+    for value in return_dict.values():
+        write_to_csv('runs', value[2], value[3])
     if shutdown:
         os.system('shutdown /S /F /T 0 /hybrid')
 
