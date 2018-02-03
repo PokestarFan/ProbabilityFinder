@@ -108,7 +108,7 @@ def run_tests(times, odds, low_cpu = 0, shutdown = False):
         for value in return_dict.values():
             write_to_csv('runs', value[2], value[3])
         print('Done!')
-   finally:
+    finally:
         if shutdown:
             os.system('shutdown /S /F /T 0 /hybrid')
 
