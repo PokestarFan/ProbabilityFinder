@@ -81,7 +81,7 @@ def worker(odds, returndict, num, low_cpu = 0):
     os.chdir("..")
     os.system('cls')
 
-def run_tests(times, odds, low_cpu = 0, shutdown = False):
+def run_tests(times, odds, low_cpu = 0):
     print('Starting...')
     manager = Manager()
     return_dict = manager.dict()
@@ -108,9 +108,6 @@ def run_tests(times, odds, low_cpu = 0, shutdown = False):
         for value in return_dict.values():
             write_to_csv('runs', value[2], value[3])
         print('Done!')
-    finally:
-        if shutdown:
-            os.system('shutdown /S /F /T 0 /hybrid')
 
 if __name__ == '__main__':
     os.system('cls')
@@ -133,4 +130,10 @@ if __name__ == '__main__':
     if times > 20:
         reps = round(times/10)
         for i in range(reps):
-            run_tests(10, odds, low_cpu = cpu, shutdown = shutdown)
+            run_tests(10, odds, low_cpu = cpu)
+            os.chdir("..")
+            os.chdir("..")        
+    else:
+        run_tests(times, odds, low_cpu = cpu)
+    if shutdown:
+        os.system('shutdown /S /F /T 0 /hybrid')
