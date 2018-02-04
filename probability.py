@@ -79,10 +79,10 @@ def worker(odds, returndict, num, low_cpu = 0):
     returndict[f'write{num}'] = calculate_probability(odds, low_cpu = low_cpu)
     os.chdir("..")
     os.chdir("..")
-    os.system('cls')
 
-def run_tests(times, odds, low_cpu = 0):
-    print('Starting...')
+def run_tests(times, odds, low_cpu = 0, dnp = False):
+    if not dnp:
+        print('Starting...')
     manager = Manager()
     return_dict = manager.dict()
     job_list = []
@@ -107,33 +107,34 @@ def run_tests(times, odds, low_cpu = 0):
             write_to_csv('runs', return_dict.values()[0][0], return_dict.values()[0][1])
         for value in return_dict.values():
             write_to_csv('runs', value[2], value[3])
-        print('Done!')
+        if not dnp:
+            print('Done!')
 
 if __name__ == '__main__':
-    os.system('cls')
     parser = argparse.ArgumentParser(description='Run big batch tests to really find out probability.')
     parser.add_argument('--version', action = 'version', version = '1.0')
     parser.add_argument('odds', nargs = 1, type = int, metavar = 'Odds for probability', help = 'Select the odds for probability, for example 2 to choose from 1 and 2')
     parser.add_argument('-t', '--times', nargs = 1, type = int, metavar = 'Times Repeated', help = 'The number of times to be repeated, default 10.', default = 10)
     parser.add_argument('-l', '-cpu', '-lcpu', '-low' ,'--low_cpu', help = 'Use low cpu mode. Specify amount', metavar = 'lowcpu', nargs = 1, default = 0)
     parser.add_argument('-s', '-shut', '--shutdown', help = 'Shuts down computer after trails are done.',dest = 'shut', action = 'store_true')
+    parser.add_argument('-np', '--print', '--no_print', help = 'Will not print \'starting\' and \'done\'. ', dest = '_print', action = 'store_true')
     args = parser.parse_args()
     odds = (args.odds)[0]
     times = args.times
     cpu = args.low_cpu
     shutdown = args.shut
+    _print = args._print
     if type(cpu) == list:
         cpu = cpu[0]
     if type(times) == list:
         times = times[0]
-
     if times > 20:
         reps = round(times/10)
         for i in range(reps):
-            run_tests(10, odds, low_cpu = cpu)
+            run_tests(10, odds, low_cpu = cpu, dnp = _print)
             os.chdir("..")
             os.chdir("..")        
     else:
-        run_tests(times, odds, low_cpu = cpu)
+        run_tests(times, odds, low_cpu = cpu, dnp = _print)
     if shutdown:
         os.system('shutdown /S /F /T 0 /hybrid')
