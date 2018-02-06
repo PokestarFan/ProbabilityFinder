@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function
 from numpy.random import randint as randrange
 import os, argparse, time
 from multiprocessing import Process, Manager
+from subprocess import run as launch
 
 def write_to_csv(filename, *args, newline = True):
     write_string = ''
@@ -109,6 +110,8 @@ def run_tests(times, odds, low_cpu = 0, dnp = False):
             write_to_csv('runs', value[2], value[3])
         if not dnp:
             print('Done!')
+        launch('git commit -a -m "BOT: Auto-committing data for value {}"'.format(str(times)))
+        launch('git push')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run big batch tests to really find out probability.')
